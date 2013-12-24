@@ -63,31 +63,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "icetools:ice_cracked",
-	recipe = {
-		{"","bucket:bucket_water",""},
-		{"bucket:bucket_water","default:steel_ingot","bucket:bucket_water"},
-		{"","bucket:bucket_water",""},
-	},
-	replacements = { {"bucket:bucket_water", "bucket:bucket_empty"}, {"bucket:bucket_water", "bucket:bucket_empty"}, {"bucket:bucket_water", "bucket:bucket_empty"}, {"bucket:bucket_water", "bucket:bucket_empty"} },
-})
-
-minetest.register_craft({
-	output = "icetools:ice_reinforced",
-	recipe = {
-		{"","icetools:steel_melted",""},
-		{"icetools:steel_melted","icetools:ice_cracked","icetools:steel_melted"},
-		{"","icetools:steel_melted",""},
-	}
-})
-
-minetest.register_craft({
-	type = "cooking",
-	output = "icetools:steel_melted",
-	recipe = "default:steel_ingot",
-})	
-
-minetest.register_craft({
 	output = "icetools:hoe_ice",
 	recipe = {
 		{"icetools:ice_crystal_refined","icetools:ice_crystal_refined"},
@@ -159,7 +134,7 @@ minetest.register_tool("icetools:axe_ice", {
 	},
 })
 
-minetest.register_craftitem("icetools:steel_melted", {
+--[[minetest.register_craftitem("icetools:steel_melted", {
 	description = "Melted Steel",
 	inventory_image = "icetools_steel_melted.png",
 })
@@ -182,6 +157,35 @@ minetest.register_node("icetools:ice_reinforced", {
 	sounds = default.node_sound_stone_defaults(),
 })
 
+minetest.register_craft({
+	type = "cooking",
+	output = "icetools:steel_melted",
+	recipe = "default:steel_ingot",
+})
+
+
+minetest.register_craft({
+	output = "icetools:ice_cracked",
+	recipe = {
+		{"","bucket:bucket_water",""},
+		{"bucket:bucket_water","default:steel_ingot","bucket:bucket_water"},
+		{"","bucket:bucket_water",""},
+	},
+	replacements = { {"bucket:bucket_water", "bucket:bucket_empty"}, {"bucket:bucket_water", "bucket:bucket_empty"}, {"bucket:bucket_water", "bucket:bucket_empty"}, {"bucket:bucket_water", "bucket:bucket_empty"} },
+})
+
+minetest.register_craft({
+	output = "icetools:ice_reinforced",
+	recipe = {
+		{"","icetools:steel_melted",""},
+		{"icetools:steel_melted","icetools:ice_cracked","icetools:steel_melted"},
+		{"","icetools:steel_melted",""},
+	}
+})
+
+
+]]
+
 minetest.register_tool("icetools:hoe_ice", {
     description = "Ice Hoe",
     inventory_image = "icetools_tool_icehoe.png",
@@ -191,9 +195,6 @@ minetest.register_tool("icetools:hoe_ice", {
             return
         end
         node = minetest.get_node(pointed_thing.under)
-        if node == "group:soil" then
-            return farming.hoe_on_use(itemstack, user, pointed_thing, 50)
-        end
         liquiddef = bucket.liquids["default:lava_source"]
         if liquiddef ~= nil and liquiddef.itemname ~= nil and (node.name == liquiddef.source or
             (node.name == "default:lava_source" or node.name == "default:lava_flowing")) then
