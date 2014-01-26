@@ -15,6 +15,24 @@ minetest.register_craftitem("icetools:ice_crystal", {
 	inventory_image = "icetools_ice_crystal.png",
 })
 
+minetest.register_craftitem("icetools:ice_crystal", {
+	description = "Ice Crystal",
+	inventory_image = "icetools_ice_crystal.png",
+})
+
+minetest.register_craftitem('icetools:water_source', {
+	description = 'Water',
+	inventory_image = minetest.inventorycube("default_water.png"),
+})
+
+minetest.register_craft({
+		output = 'bucket:bucket_water',
+		recipe = {
+				{'icetools:water_source'},
+				{'bucket:bucket_empty'},
+		}
+})
+
 minetest.register_craftitem("icetools:ice_crystal_refined", {
 	description = "Refined Ice Crystal",
 	inventory_image = "icetools_ice_crystal_refined.png",
@@ -142,7 +160,13 @@ minetest.register_tool("icetools:shovel_ice", {
 	},
 	minetest.register_on_punchnode(function(pos, node, puncher)
 		if puncher:get_wielded_item():get_name() == 'icetools:shovel_ice' then
-			if node.name == "default:lava_source" then
+			if node.name == "default:water_source" then
+				minetest.remove_node(pos)
+				local inv = puncher:get_inventory()
+				if inv then
+					inv:add_item("main", "icetools:water_source")
+				end
+			elseif node.name == "default:water_flowing" then
 				minetest.remove_node(pos)
 			end
 		end
@@ -278,7 +302,13 @@ minetest.register_tool("icetools:paxel_ice", {
 	end),
 	minetest.register_on_punchnode(function(pos, node, puncher)
 		if puncher:get_wielded_item():get_name() == 'icetools:paxel_ice' then
-			if node.name == "default:lava_source" then
+			if node.name == "default:water_source" then
+				minetest.remove_node(pos)
+				local inv = puncher:get_inventory()
+				if inv then
+					inv:add_item("main", "icetools:water_source")
+				end
+			elseif node.name == "default:water_flowing" then
 				minetest.remove_node(pos)
 			end
 		end
